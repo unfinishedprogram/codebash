@@ -1,0 +1,12 @@
+.editor {
+    box-shadow: 0px 2px 5px #000A;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    min-height: 0;
+    min-width: 0;
+    padding: 1rem;
+}

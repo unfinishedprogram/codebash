@@ -1,39 +1,38 @@
 import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
-import { onMount, For } from 'solid-js';
-import registerAll, { supportedLanguages } from './languages';
+import { onMount, Component } from 'solid-js';
+import registerAll from './languages';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import style from "../../style/codeEditor.module.css";
 
 registerAll();
 
 console.log(monaco.languages.getLanguages());
 
-const CodeEditor = () => {
+interface IEditorProps {
+    lang:string, // TODO, add language type
+}
 
+const CodeEditor:Component<IEditorProps> = props => {
     let container:HTMLDivElement;
-    const options: editor.IStandaloneEditorConstructionOptions = {theme:"vs-dark"};
-
+    const options: editor.IStandaloneEditorConstructionOptions = {
+        theme:"vs-dark", 
+        lineNumbersMinChars:3,
+        automaticLayout: true,
+        links:false, 
+    };
     let editorInstance!:editor.IStandaloneCodeEditor;
-    let languageSelect!:HTMLSelectElement;
+    window.addEventListener("resize", () => {
+        editorInstance.layout();
+        console.log("resize")
+     });
+    
 
-    onMount(() => {
-        editorInstance = editor.create(container, options);
-    })
-
-    const languageChange = (e:Event) => {
-        editorInstance.getModel()?.dispose();
-        editorInstance.setModel(editor.createModel((e.target as HTMLSelectElement).value, (e.target as HTMLSelectElement).value));
-    }
-
-    return <>
-        <select ref={languageSelect} onChange={languageChange}>
-            <For each={supportedLanguages}>
-                {(lang) => (<option value={lang}>{lang}</option>)}
-            </For>
-        </select>
-        <div ref={container!} style="width:80vw;height:80vh;">
-
-        </div>
-    </>
+    // Initialize the editor
+    onMount(() => editorInstance = editor.create(container, options));
+    
+    return <div class={style["container"]!}>
+        <div class={style["editor"]!} ref={container!}>
+    </div> </div>
 }
 
 export default CodeEditor;
