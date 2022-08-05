@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "@types/ws": "^8.5.3",
+    "tslog": "^3.3.3",
     "ws": "^8.8.1"
   }
 }

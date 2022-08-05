@@ -6,7 +6,7 @@ use log::*;
 use tokio_tungstenite::{accept_async};
 use tokio_tungstenite::tungstenite::{Result, Error, Message};
 use serde::{Deserialize, Serialize};
-use types::ClientMessages;
+use types::ClientMessage;
 
 async fn accept_connection(peer: SocketAddr, stream: TcpStream) {
     if let Err(e) = handle_connection(peer, stream).await {
@@ -27,9 +27,10 @@ async fn handle_connection(peer: SocketAddr, stream: TcpStream) -> Result<()> {
         let msg = msg?;
         if msg.is_text() {
             println!("> {}", msg);
-            let client_message: ClientMessages = serde_json::from_str(msg.to_string().as_str()).unwrap();
+            let client_message: ClientMessage = serde_json::from_str(msg.to_string().as_str()).unwrap();
             match client_message {
-                ClientMessages::ChatMessage(_) => println!("Received ConnectionPayload"),
+                ClientMessage::ChatMessage(_) => println!("Received ConnectionPayload"),
+                ClientMessage::ConnectionPayloadMessage(_) => todo!(),
             }
             println!("Message received: {:?}", client_message);
             ws_stream.send(msg).await?;

@@ -8,14 +8,14 @@ use serde_json::Result;
 
 #[derive(TS)]
 #[derive(Serialize, Deserialize, Debug)]
-#[ts(export, export_to="../node-client/bindings/messageTypes/")]
+#[ts(export, export_to="../node-client/bindings/messageTypes/ClientMessage/")]
 pub struct ChatMessage{
     pub user_id: String,
     pub message: String,
 }
 
 #[derive(TS)]
-#[ts(export, export_to="../node-client/bindings/messageTypes/")]
+#[ts(export, export_to="../node-client/bindings/messageTypes/ClientMessage/")]
 #[derive(Serialize, Deserialize, Debug)]
 pub struct ConnectionPayloadMessage {
     pub data1: String,
@@ -25,6 +25,7 @@ pub struct ConnectionPayloadMessage {
 #[derive(Serialize, Deserialize, Debug)]
 #[derive(TS)]
 #[ts(export, export_to="../node-client/bindings/enums/")]
-pub enum ClientMessages {
-    ChatMessage(ChatMessage)
+pub enum ClientMessage {
+    ChatMessage(ChatMessage),
+    ConnectionPayloadMessage(ConnectionPayloadMessage),
 }
