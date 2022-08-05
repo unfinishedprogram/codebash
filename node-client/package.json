@@ -5,5 +5,8 @@
   "dependencies": {
     "@types/ws": "^8.5.3",
     "ws": "^8.8.1"
+  },
+  "scripts": {
+    "gentypes":"tsc src/typeGenerator.ts && node src/typeGenerator.js && rm src/typeGenerator.js"
   }
 }

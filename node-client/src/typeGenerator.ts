@@ -1,4 +1,4 @@
-import fs from "fs"
+import * as fs from "fs"
 
 const removeTS = (name: string): string => name.substring(0, name.length - 3);
 
