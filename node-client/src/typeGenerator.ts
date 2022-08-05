@@ -1,4 +1,4 @@
-import fs from "fs"
+import * as fs from "fs"
 
 const removeTS = (name: string): string => name.substring(0, name.length - 3);
 
@@ -8,6 +8,11 @@ fs.readdir("./bindings/messageTypes", (_, files) => {
         .filter(f => f.endsWith(".ts"))
         .map(f => removeTS(f))
         .filter(f => f !== 'types');
+
+    if(files.length === 0){
+        throw new Error("Message types from rust must be generated first");
+    }
+
     const imports = files.map(f => `import {${f}} from './messageTypes/${f}';`).join('\n');
     
     let typeNames = "type TypeName = " + files.map(f => `'${f}'`).join(" | ")
