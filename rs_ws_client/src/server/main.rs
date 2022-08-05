@@ -6,8 +6,7 @@ use log::*;
 use tokio_tungstenite::{accept_async};
 use tokio_tungstenite::tungstenite::{Result, Error, Message};
 use serde::{Deserialize, Serialize};
-
-use types::{HelloWorldMessage};
+use types::ClientMessages;
 
 async fn accept_connection(peer: SocketAddr, stream: TcpStream) {
     if let Err(e) = handle_connection(peer, stream).await {
@@ -22,29 +21,17 @@ async fn handle_connection(peer: SocketAddr, stream: TcpStream) -> Result<()> {
     let mut ws_stream = accept_async(stream).await.expect("Failed to accept stream");
 
     info!("New WebSocket connection: {}", peer);
-
-    let hello_message = HelloWorldMessage {
-        user_id: "server".to_owned(),
-        message: "Welcome to the server".to_owned()
-    };
-
-    let wrapper_msg = types::Message {
-        message_type: "HelloWorldMessage".to_owned(),
-        data: hello_message,
-        
-    };
-
-    let json = serde_json::to_vec(&wrapper_msg).unwrap();
-
-    let msg: Message = Message::Binary(json);
-    ws_stream.send(msg).await?;
-
     // Main receiving loop.
     // Receives the message and just send it back.
     while let Some(msg) = ws_stream.next().await {
         let msg = msg?;
-        if msg.is_text() || msg.is_binary() {
-            println!("Message received: {}", msg);
+        if msg.is_text() {
+            println!("> {}", msg);
+            let client_message: ClientMessages = serde_json::from_str(msg.to_string().as_str()).unwrap();
+            match client_message {
+                ClientMessages::ChatMessage(_) => println!("Received ConnectionPayload"),
+            }
+            println!("Message received: {:?}", client_message);
             ws_stream.send(msg).await?;
         }
     }

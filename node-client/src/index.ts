@@ -1,39 +1,26 @@
 import WebSocket from "ws";
-import { caster, Message, MessageHandler } from "../bindings/types";
+import { ClientMessagesHandler, } from "../bindings/types";
+import { ClientMessages } from "../bindings/ClientMessages";
 
-const handlers: MessageHandler = {
-	ConnectionPayloadMessage: arg => console.log(arg),
-	HelloWorldMessage: arg => console.log(arg)
+const handlers: ClientMessagesHandler = {
+	ChatMessage: arg => console.log(arg),
 }
 
 const ws = new WebSocket('ws://127.0.0.1:9002');
 
 ws.on('open', () => {
-	const message: Message<'ConnectionPayloadMessage'> = {
-		data: {
-			data1: 'hi',
-			data2: 123
-		},
-		message_type: 'ConnectionPayloadMessage'
+	const clientMessages: ClientMessages = {
+		'ChatMessage': {message: "message", user_id: "user_id"}
 	}
-	ws.send(JSON.stringify(message));
+	ws.send(JSON.stringify(clientMessages));
 });
 
 ws.on('message', (data) => {
-	const newData: Message<keyof MessageHandler> = parser(data.toString());
-	const message = caster(newData.message_type, newData.data);
-	const handler = handlers[newData.message_type];
-
-	if (!handler) {
-		console.error("Message received with no match. Broken!")
-		console.error(newData);
-		return;
+	const message: ClientMessages = JSON.parse(data.toString());
+	try {
+		const key = Object.keys(message)[0] as keyof ClientMessages;
+		handlers[key](message[key]);
+	} catch (e) {
+		console.log("Message of unknown type: ", data.toString());
 	}
-	// This is cursed. I tried my best.
-	handler(message as any);
 });
-
-// receives some json data
-function parser(data: string): Message<any> {
-	return JSON.parse(data);
-}
