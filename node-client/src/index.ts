@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { caster, Message, MessageHandler } from "../bindings/types";
+import { Message, MessageHandler, MessageTypes } from "../bindings/types";
 
 const handlers: MessageHandler = {
 	ConnectionPayloadMessage: arg => console.log(arg),
@@ -19,21 +19,24 @@ ws.on('open', () => {
 	ws.send(JSON.stringify(message));
 });
 
-ws.on('message', (data) => {
-	const newData: Message<keyof MessageHandler> = parser(data.toString());
-	const message = caster(newData.message_type, newData.data);
-	const handler = handlers[newData.message_type];
+function handleMessage<T extends keyof MessageTypes>  (message:Message<T>) {
+	const handler = handlers[message.message_type];
 
-	if (!handler) {
-		console.error("Message received with no match. Broken!")
-		console.error(newData);
+	if(!handler){
+		console.error("Message received with no match. Broken!");
+		console.error(message);
 		return;
 	}
-	// This is cursed. I tried my best.
-	handler(message as any);
+
+	handler(message.data);
+}
+
+ws.on('message', (data) => {
+	const message = parser(data.toString());
+	handleMessage(message);
 });
 
 // receives some json data
-function parser(data: string): Message<any> {
+function parser(data: string): Message<keyof MessageTypes> {
 	return JSON.parse(data);
 }

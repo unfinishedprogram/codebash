@@ -2,30 +2,32 @@ import * as fs from "fs"
 
 const removeTS = (name: string): string => name.substring(0, name.length - 3);
 
+const constantTypes = {
+    message:  "export interface Message<T extends keyof MessageTypes> {message_type: T, data: MessageTypes[T]}",
+    handlerInterface: "export type MessageHandler = {\n\t[key in keyof MessageTypes]: (arg: MessageTypes[key]) => void;\n}",
+}
+
+const constantContent = `
+${constantTypes.message}
+${constantTypes.handlerInterface}`
+
+
 fs.readdir("./bindings/messageTypes", (_, files) => {
-    const header = "// THIS CODE WAS AUTO-GENERATED. DO NOT EDIT MANUALLY.\n\n\n\n"
+    const header = "// THIS CODE WAS AUTO-GENERATED. DO NOT EDIT MANUALLY.\n"
+
     files = files
         .filter(f => f.endsWith(".ts"))
         .map(f => removeTS(f))
         .filter(f => f !== 'types');
 
-    if(files.length === 0){
+    if(files.length === 0)
         throw new Error("Message types from rust must be generated first");
-    }
-
-    const imports = files.map(f => `import {${f}} from './messageTypes/${f}';`).join('\n');
     
-    let typeNames = "type TypeName = " + files.map(f => `'${f}'`).join(" | ")
+    const imports = files.map(f => `import {${f}} from './messageTypes/${f}';`).join('\n');
 
-    let messageTypes = "type MessageType<T> = \n";
-    files.forEach(f => messageTypes += `\tT extends '${f}' ? ${f} : \n`);
-    messageTypes += "\tnever;"
+    const messageTypes = 
+    `export interface MessageTypes {\n ${files.map(f => `\t'${f}' : ${f};`).join('\n')}\n};`
 
-    let getterFunction = "export function caster<T extends TypeName>(type: T, element: any): MessageType<T> { return element as MessageType<T>;}";
-
-    const message =  "export interface Message<T extends TypeName> {message_type: T, data: MessageType<T>}"
-    const handlerInterface = "export type MessageHandler = {\n\t[key in TypeName]: (arg: MessageType<key>) => void;\n}";
-
-    const final = `${header}${imports}\n${typeNames}\n${messageTypes}\n${getterFunction}\n${message}\n${handlerInterface}`;
+    const final = `${header}${imports}\n\n${messageTypes}\n${constantContent}`;
     fs.writeFileSync('./bindings/types.ts', final);
 });
