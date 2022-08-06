@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/node": "^18.6.4",
     "typescript": "~4.6.4"
   },
   "dependencies": {
@@ -7,6 +8,6 @@
     "ws": "^8.8.1"
   },
   "scripts": {
-    "gentypes":"tsc src/typeGenerator.ts && node src/typeGenerator.js && rm src/typeGenerator.js"
+    "gentypes": "tsc src/typeGenerator.ts && node src/typeGenerator.js && rm src/typeGenerator.js"
   }
 }

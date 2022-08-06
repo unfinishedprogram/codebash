@@ -26,7 +26,7 @@ fs.readdir("./bindings/messageTypes", (_, files) => {
     const imports = files.map(f => `import {${f}} from './messageTypes/${f}';`).join('\n');
 
     const messageTypes = 
-    `interface MessageTypes {\n ${files.map(f => `\t'${f}' : ${f};`).join('\n')}\n};`
+    `export interface MessageTypes {\n ${files.map(f => `\t'${f}' : ${f};`).join('\n')}\n};`
 
     const final = `${header}${imports}\n\n${messageTypes}\n${constantContent}`;
     fs.writeFileSync('./bindings/types.ts', final);
