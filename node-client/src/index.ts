@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { caster, Message, MessageHandler } from "../bindings/types";
+import { Message, MessageHandler } from "../bindings/types";
 
 const handlers: MessageHandler = {
 	ConnectionPayloadMessage: arg => console.log(arg),
@@ -21,7 +21,9 @@ ws.on('open', () => {
 
 ws.on('message', (data) => {
 	const newData: Message<keyof MessageHandler> = parser(data.toString());
-	const message = caster(newData.message_type, newData.data);
+	const message: = 
+	
+	caster(newData.message_type, newData.data);
 	const handler = handlers[newData.message_type];
 
 	if (!handler) {
