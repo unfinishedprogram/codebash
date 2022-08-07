@@ -1,6 +1,6 @@
-import { ClientMessageOf, ClientMessageType } from "../../bindings/types";
+import { ClientMessageTypes } from "../../bindings/types";
 import { Server } from "../protocolWrapper/server";
 
 export type ClientMessageHandler = {
-	[key in ClientMessageType]: (arg: ClientMessageOf<key>, ws: Server) => void;
+	[key in keyof ClientMessageTypes]: (arg: ClientMessageTypes[key], ws: Server) => void;
 }
