@@ -13,8 +13,6 @@ fs.readdir("./bindings/enums", (_, files) => {
 
     let messageTypes = "";
 
-    let iMessageTypes = "";
-
     enums.forEach(e => {
         const types = fs.readdirSync("./bindings/messageTypes/" + e)
             .filter(f => f.endsWith(".ts"))
@@ -22,10 +20,6 @@ fs.readdir("./bindings/enums", (_, files) => {
             .filter(f => f !== 'types');
         
         imports.push(...types.map(f => `import {${f}} from './messageTypes/${e}/${f}';`));
-
-        // messageTypes += `export type ${e}Of<T> = \n`;
-        // messageTypes += types.map(t =>`\tT extends '${t}'? ${t} : `).join("\n");
-        // messageTypes += "\n\tnever;" 
 
         messageTypes += `export interface ${e}Types { \n`;
         messageTypes += types.map(t =>`\t'${t}' : ${t};`).join("\n");
