@@ -23,7 +23,8 @@ fs.readdir("./bindings/enums", (_, files) => {
 
         messageTypes += `export interface ${e}Types { \n`;
         messageTypes += types.map(t =>`\t'${t}' : ${t};`).join("\n");
-        messageTypes += '\n}';
+        messageTypes += '\n}\n';
+        messageTypes += `export type ClientMessageType = Pick<ClientMessageTypes, keyof ClientMessageTypes>;\n`
     })
 
 

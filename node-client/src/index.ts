@@ -1,5 +1,5 @@
 import WebSocket from "ws";
-import { ClientMessageTypes, } from "../bindings/types";
+import { ClientMessageType, ClientMessageTypes, } from "../bindings/types";
 import { ClientMessage } from "../bindings/enums/ClientMessage";
 import { Socket } from "./protocolWrapper/socket";
 import { handleChatMessage } from "./handlers/chatMessageHandler";
@@ -32,8 +32,6 @@ ws.on('open', () => {
 
 ws.on('message', (data) => handleMessage(data));
 
-
-
 // The element is structured as
 // message = {TypeName: {...}}, where {...} is the data of the type.
 // The first key will be enough - BY CONVENTION - to access the object data.
@@ -46,20 +44,23 @@ ws.on('message', (data) => handleMessage(data));
 // I'm asking typescript to trust me, and I'm trusting javascript to raise an error if it can't be
 // properly parsed.
 // Since there are no types, we will eventually need to extensive checks to see if all the data is there.
-function handleMessage(data: WebSocket.RawData) {
-	const message: Pick<ClientMessageTypes, keyof ClientMessageTypes> = JSON.parse(data.toString());
 
-	log.info("Message received from the server.", message);
-	
-	// This is kinda hacky, but it works and I love it.
-	(<T extends keyof ClientMessageTypes>(message:Pick<ClientMessageTypes, T>) => {
-		const [k, v] = Object.entries(message)[0] as [T, ClientMessageTypes[T]];
+function executeHandler<T extends keyof ClientMessageTypes>(message:Pick<ClientMessageTypes, T>):Promise<void> {
+	const [k, v] = Object.entries(message)[0] as [T, ClientMessageTypes[T]];
+	return new Promise((res, rej) => {
 		if(handlers[k]){
 			handlers[k](v, server);
+			res();
 		} else {
-			log.error("Message of unknown type: ", data.toString());
+			rej(`Message of unknown type: ${message}`);
 		}
-	})(message);
-
-		
+	})
 }
+
+function handleMessage(data: WebSocket.RawData) {
+	const message: ClientMessageType = JSON.parse(data.toString());
+
+	log.info("Message received from the server.", message);
+	executeHandler(message);
+}
+
