@@ -7,6 +7,7 @@ import {conf as lua_conf, language as lua_language } from "./basic-languages/lua
 import {conf as python_conf, language as python_language } from "./basic-languages/python"
 import {conf as rust_conf, language as rust_language } from "./basic-languages/rust"
 import {conf as typescript_conf, language as typescript_language } from "./basic-languages/typescript"
+import {conf as markdown_conf, language as markdown_language } from "./basic-languages/markdown"
 
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 
@@ -19,7 +20,8 @@ const languages:Record<string, [monaco.languages.LanguageConfiguration, monaco.l
     "lua":[lua_conf, lua_language],
     "python":[python_conf, python_language],
     "rust":[rust_conf, rust_language],
-    "typescript":[typescript_conf, typescript_language]
+    "typescript":[typescript_conf, typescript_language],
+    "markdown":[markdown_conf, markdown_language]
 }
 
 function registerLanguage(id:string, conf:any, lang:any) {

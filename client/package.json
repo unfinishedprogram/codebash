@@ -20,6 +20,8 @@
     "vitest": "^0.20.3"
   },
   "dependencies": {
+    "@types/markdown-it": "^12.2.3",
+    "markdown-it": "^13.0.1",
     "monaco-editor": "^0.33.0",
     "solid-app-router": "^0.4.2",
     "solid-js": "^1.4.8"
