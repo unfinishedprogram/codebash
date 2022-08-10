@@ -1,0 +1,59 @@
+@mixin panel {
+    & {
+        overflow: auto;
+        background-color: var(--layer);
+        border: 1px solid var(--layer-border);
+        padding: 1rem;
+        border-radius: 1px;
+        box-shadow: 0 0.2rem 0.25rem #0005;
+    }
+}
+
+@mixin btn($color:gray) {
+    font-weight: bold;
+    &::before {
+        content:"";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left:0;
+        bottom: 0;
+        right: 0;
+        padding: 0.5rem;
+        background-color: $color;
+        opacity: 0.7;
+    }    
+
+    position: relative;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    z-index: 100;
+    border-radius: 1px;
+    border:none;
+    box-shadow: 0 0.2rem 0.25rem #0005;
+
+    transition: all 0.1s;
+
+    &:hover {
+        filter: brightness(1.2);
+        &::before {
+            opacity: 0.5;
+        }
+    }
+
+    &:active {
+        box-shadow: 0 0.1rem 0.1rem #0005;
+    }
+}
+
+@mixin btn-warn {
+    @include btn(orange);
+}
+
+@mixin btn-cancel {
+    @include btn(red);
+}
+
+@mixin btn-confirm {
+    @include btn(green);
+}

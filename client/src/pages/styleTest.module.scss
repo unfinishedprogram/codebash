@@ -1,0 +1,24 @@
+@import "../style/mixins.scss";
+
+.layers {
+    * {
+        @include panel;
+    };
+}
+.buttons_container {
+    @include panel;
+    display: flex;
+    justify-content: space-around
+}
+.button {
+    @include btn;
+}
+.button_confirm {
+    @include btn-confirm;
+}
+.button_warn {
+    @include btn-warn;
+}
+.button_cancel {
+    @include btn-cancel;
+}

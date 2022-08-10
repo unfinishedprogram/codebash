@@ -1,9 +1,4 @@
 .markdown {
-    --bg-color: #EEE;
-    --fg-color: #222;
-    --shadow-0: 0px 1px 3px #0006;
-    --shadow-1: 0px 2px 5px #0006;
-
     overflow-x: wrap;
     overflow-y: auto;
     background-color: var(--bg-color);

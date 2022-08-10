@@ -1,0 +1,18 @@
+@import "../style/mixins.scss";
+
+.markdown {
+    @include panel;
+
+    pre  {
+        @include panel;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+    }
+    
+    blockquote > p {
+        @include panel;
+        padding: 0.5rem;
+        border-left: 4px solid var(--primary-3) !important;
+        overflow-x: wrap;
+    }   
+}
