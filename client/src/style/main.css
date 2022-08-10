@@ -6,5 +6,11 @@ body {
 #root {
     display: grid;
     height: 100vh;
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);    
+}
+
+main {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    min-height: 0;
 }
