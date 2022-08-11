@@ -63,5 +63,7 @@ export abstract class Logger {
 	}
 }
 
-const log = Logger.log;
-export default log;
+export const log = Logger.log;
+export const error = Logger.error;
+export const warn = Logger.warn;
+export const info = Logger.info;
