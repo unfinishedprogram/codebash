@@ -14,52 +14,48 @@ main {
     height: 100vh;
     grid-template-rows: auto minmax(0, 1fr);
     font-family: Arial, Helvetica, sans-serif;
-}
 
-#root.theme_dark {
-    color-scheme: dark;
+    &.theme_dark {
+        color-scheme: dark;
 
-    --bg-0: #1C1C1E;
-    --bg-1: #232326;
-    --bg-2: #303035;
+        --bg-0: #1C1C1E;
+        --bg-1: #232326;
+        --bg-2: #303035;
+    
+        --layer: #FFFFFF0F;
+        --layer-bright: #FFFFFF5F;
+        --layer-border: #FFFFFF1F;
+    
+        --primary-0: #FFFFFF;
+        --primary-1: #CECECE;
+        --primary-2: #989899;
+        --primary-3: #5A5A5E;
+        --primary-4: #404044;
+    
+        --scrollbar-color:var(--primary-4);
+        --scrollbar-color-hover:var(--primary-3);
+    }
+    &.theme_light {
+        color-scheme: light;
 
-    --layer: #FFFFFF0F;
-    --layer-bright: #FFFFFF5F;
-    --layer-border: #FFFFFF1F;
+        --bg-0: #dcdcde;
+        --bg-1: #e3e3e6;
+        --bg-2: #FFFFFF;
 
-    --primary-0: #FFFFFF;
-    --primary-1: #CECECE;
-    --primary-2: #989899;
-    --primary-3: #5A5A5E;
-    --primary-4: #404044;
+        --layer: #FFFFFF2F;
+        --layer-bright: #FFFFFFAF;
+        --layer-border: #FFFFFF5F;
 
-    --scrollbar-color:var(--primary-4);
-    --scrollbar-color-hover:var(--primary-3);
-}
+        --primary-0: #000000;
+        --primary-1: #3E3E3F;
+        --primary-2: #8A8A8E;
+        --primary-3: #C4C4C6;
+        --primary-4: #DCDCDD;
 
-#root.theme_light {
-    color-scheme: light;
+        --scrollbar-color:var(--primary-3);
+        --scrollbar-color-hover:var(--primary-4);
+    }
 
-    --bg-0: #dcdcde;
-    --bg-1: #e3e3e6;
-    --bg-2: #FFFFFF;
-
-    --layer: #FFFFFF2F;
-    --layer-bright: #FFFFFFAF;
-    --layer-border: #FFFFFF5F;
-
-    --primary-0: #000000;
-    --primary-1: #3E3E3F;
-    --primary-2: #8A8A8E;
-    --primary-3: #C4C4C6;
-    --primary-4: #DCDCDD;
-
-    --scrollbar-color:var(--primary-3);
-    --scrollbar-color-hover:var(--primary-4);
-}
-
-// Defaults based on theme
-#root {
     background-color: var(--bg-0);
 
     h1, h2, h3, h4, h5, h6, code, th {
