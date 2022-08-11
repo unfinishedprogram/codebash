@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import CodeEditor from "../components/code-editor/codeEditor";
 import MarkdownView from "../components/markdownView";
-import style from "../style/markdownEditor.module.css";
+import style from "./markdownEditor.module.scss";
 import testContent from "../test.md?raw";
 
 const MarkdownEditor = () => {

@@ -2,7 +2,7 @@ import { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import { onMount, Component } from 'solid-js';
 import registerAll from './languages';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import style from "../../style/codeEditor.module.css";
+import style from "../../style/codeEditor.module.scss";
 
 registerAll();
 
