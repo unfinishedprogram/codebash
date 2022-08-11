@@ -1,4 +1,3 @@
-import WebSocket from "ws";
 import { ClientMessage } from "../../bindings/enums/ClientMessage";
 
 export class Socket {

@@ -1,11 +1,9 @@
-import WebSocket from "ws";
 import { ClientMessageType, ClientMessageTypes, } from "../bindings/types";
 import { ClientMessage } from "../bindings/enums/ClientMessage";
 import { Socket } from "./protocolWrapper/socket";
 import { handleChatMessage } from "./handlers/chatMessageHandler";
 import { ClientMessageHandler } from "./handlers/handlerTypes";
 import { Server } from "./protocolWrapper/server";
-import { Logger } from "tslog";
 
 const ws = new WebSocket('ws://127.0.0.1:9002');
 const socket = new Socket(ws);
@@ -16,21 +14,14 @@ const handlers: ClientMessageHandler = {
 	ConnectionPayloadMessage: (arg, ws) => console.log('Connection arrived.')
 }
 
-const log: Logger = new Logger({
-	name: "messageLogger",
-	dateTimePattern: 'hour:minute:second',
-	'displayLoggerName': false,
-	printLogMessageInNewLine: true,
-});
-
-ws.on('open', () => {
+ws.onopen = () => {
 	const clientMessages: ClientMessage = {
 		'ChatMessage': {message: "message", user_id: "user_id"}
 	}
 	ws.send(JSON.stringify(clientMessages));
-});
+};
 
-ws.on('message', (data) => handleMessage(data));
+ws.onmessage = (data) => handleMessage(data);
 
 // The element is structured as
 // message = {TypeName: {...}}, where {...} is the data of the type.
@@ -57,10 +48,9 @@ function executeHandler<T extends keyof ClientMessageTypes>(message:Pick<ClientM
 	})
 }
 
-function handleMessage(data: WebSocket.RawData) {
+function handleMessage(event: MessageEvent<any>) {
+	const data = event.data
 	const message: ClientMessageType = JSON.parse(data.toString());
-
-	log.info("Message received from the server.", message);
+	console.log("Message received from the server.", message)
 	executeHandler(message);
 }
-
