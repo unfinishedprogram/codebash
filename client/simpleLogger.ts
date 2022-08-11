@@ -33,10 +33,6 @@ export abstract class Logger {
 		}
 	}
 
-	private static style = {
-		date:"color:blue;"
-	}
-
 	private static prefix(level:keyof typeof Logger.levels):[string, string] {
 		return [
 			`[${time()}] : %c ${level.toUpperCase()} `,
