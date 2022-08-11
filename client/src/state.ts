@@ -1,4 +1,5 @@
 import { createStore } from "solid-js/store";
+import "../../node-client/src/index";
 
 export interface IGlobalState {
     theme: `theme_${ "dark" | "light" }`
