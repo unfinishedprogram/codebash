@@ -1,11 +1,12 @@
 import { state, setState } from "../src/state";
 
-type HandlerArgs<D> = [data: D, state: typeof state, setState: typeof setState] 
+// Argument types for all handlers
+type HandlerArgs<T> = [data: T, state: typeof state, setState: typeof setState] 
 
-export interface IMessageData {
+export interface MessagePayloadTypes {
 	"chat/message": {msg:string, user:string};
 }
 
-export type IMessageHandlers = {
-	[key in keyof IMessageData]: (...args:HandlerArgs<IMessageData[key]>) => void
+export type MessageHandlers = {
+	[key in keyof MessagePayloadTypes]: (...args:HandlerArgs<MessagePayloadTypes[key]>) => void
 }
